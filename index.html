@@ -1,46 +1,249 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<title>Personal Finance Tracker</title>
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-	<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Personal Finance Tracker</title>
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+  <!-- Custom CSS -->
+  <style>
+    /* Navigation bar */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #fff;
+      padding: 10px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 999;
+    }
+
+    .navbar-logo {
+      font-size: 28px;
+      font-weight: bold;
+      color: #007bff;
+      text-transform: uppercase;
+    }
+
+    .navbar-menu {
+      display: flex;
+      list-style: none;
+    }
+
+    .navbar-menu-item {
+      margin-left: 20px;
+      font-size: 18px;
+      color: #333;
+      text-transform: uppercase;
+      cursor: pointer;
+    }
+
+    .navbar-menu-item:hover {
+      color: #007bff;
+    }
+
+    /* Hero section */
+    .hero {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f5f5f5;
+      background-image: url('https://picsum.photos/1200/800');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    .hero-content {
+      max-width: 700px;
+      text-align: center;
+    }
+
+    .hero-title {
+      font-size: 64px;
+      font-weight: bold;
+      color: #007bff;
+      margin-bottom: 30px;
+    }
+
+    .hero-subtitle {
+      font-size: 32px;
+      color: #333;
+      margin-bottom: 30px;
+    }
+
+    .hero-button {
+      font-size: 24px;
+      font-weight: bold;
+      color: #fff;
+      background-color: #007bff;
+      border: none;
+      border-radius: 30px;
+      padding: 15px 30px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .hero-button:hover {
+      background-color: #0062cc;
+    }
+
+    /* Features section */
+    .features {
+      padding: 100px 0;
+      background-color: #fff;
+    }
+
+    .features-title {
+      font-size: 48px;
+      font-weight: bold;
+      color: #333;
+      text-align: center;
+      margin-bottom: 50px;
+    }
+
+    .features-icon {
+      font-size: 48px;
+      color: #007bff;
+      margin-bottom: 20px;
+    }
+
+    ..features-description {
+      font-size: 16px;
+      margin-bottom: 10px;
+    }
+    .card-footer {
+      background-color: #f8f9fa;
+    }
+    .card-footer p {
+      margin-bottom: 0;
+    }
+  </style>
 </head>
+
 <body>
-	<header>
-		<nav class="navbar navbar-expand-lg navbar-light bg-light">
-		  <a class="navbar-brand" href="#">Personal Finance Tracker</a>
-		  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-		    <span class="navbar-toggler-icon"></span>
-		  </button>
-		  <div class="collapse navbar-collapse" id="navbarNav">
-		    <ul class="navbar-nav ml-auto">
-		      <li class="nav-item">
-		        <a class="nav-link" href="#">Dashboard</a>
-		      </li>
-		      <li class="nav-item">
-		        <a class="nav-link" href="#">Transactions</a>
-		      </li>
-		      <li class="nav-item">
-		        <a class="nav-link" href="#">Categories</a>
-		      </li>
-		    </ul>
-		  </div>
-		</nav>
-	</header>
+  <div id="app">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-lg-4">
+          <div class="card">
+            <div class="card-header">
+              Add Transaction
+            </div>
+            <div class="card-body">
+              <form>
+                <div class="form-group">
+                  <label for="transaction-type">Transaction Type</label>
+                  <select class="form-control" id="transaction-type">
+                    <option>Expense</option>
+                    <option>Income</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="transaction-date">Transaction Date</label>
+                  <input type="date" class="form-control" id="transaction-date">
+                </div>
+                <div class="form-group">
+                  <label for="transaction-amount">Amount</label>
+                  <input type="number" class="form-control" id="transaction-amount">
+                </div>
+                <button type="submit" class="btn btn-primary">Add Transaction</button>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-8">
+          <div class="card">
+            <div class="card-header">
+              Transactions
+            </div>
+            <div class="card-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Type</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Amount</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="(transaction, index) in transactions" :key="transaction.id">
+                    <th scope="row">{{ index + 1 }}</th>
+                    <td>{{ transaction.type }}</td>
+                    <td>{{ transaction.date }}</td>
+                    <td>{{ transaction.amount }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="card-footer">
+              <p>Total Expenses: {{ totalExpenses }}</p>
+              <p>Total Income: {{ totalIncome }}</p>
+              <p>Balance: {{ balance }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-	<main class="container">
-		<h1>Welcome to Personal Finance Tracker</h1>
-		<p>Track your income, expenses, and categories all in one place.</p>
-		<button class="btn btn-primary">Get Started</button>
-	</main>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script>
+    var app = new Vue({
+      el: '#app',
+      data: {
+        transactions: [],
+      },
+      methods: {
+        fetchTransactions: function() {
+          axios.get('/transactions')
+            .then(response => {
+              this.transactions = response.data;
+            })
+            .catch(error => {
+              console.log(error);
+            });
+        },
+      },
+      computed: {
+        totalExpenses: function() {
+          return this.transactions.filter(transaction => transaction.type === 'Expense')
+                                  .reduce((total, transaction) => total + parseFloat(transaction.amount), 0)
+                                  .toFixed(2);
+        },
+        totalIncome: function() {
+          return this.transactions.filter(transaction => transaction.type === 'Income')
+                                  .
+    // Total Expenses
+    totalExpenses: function() {
+      return this.transactions.filter(transaction => transaction.type === 'Expense')
+                              .reduce((total, transaction) => total + transaction.amount, 0);
+    },
 
-	<footer>
-		<p>&copy; 2023 Personal Finance Tracker</p>
-	</footer>
-
-	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    // Total Balance
+    totalBalance: function() {
+      return this.totalIncome() - this.totalExpenses();
+    }
+  }
+});
+  </script>
+  <!-- Footer -->
+  <footer class="bg-light text-center text-lg-start">
+    <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+      © 2021 Your Company Name:
+      <a class="text-dark" href="https://www.yourwebsite.com/">www.yourwebsite.com</a>
+    </div>
+  </footer>
 </body>
 </html>
